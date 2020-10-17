@@ -21,7 +21,7 @@ const resolvers = {
             .populate('savedBooks')
 
         },
-        // get single suer
+        // get single user
         user: async (parent, { username }) => {
             return User.findOne({ username })
             .select('-_v -password')
