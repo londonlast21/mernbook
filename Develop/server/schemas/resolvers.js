@@ -5,9 +5,10 @@ const { User, Book } = require("../models");
 const resolvers = {
 
     Query: {
-        books: async () => {
+        books: async (parent, { username }) => {
+            const params = username ? { username } : {};
             return Book.find().sort({ _id: -1  });
-        }
+        },
     }
 };
 
