@@ -39,6 +39,18 @@ const resolvers = {
             const params = title ? { title } : {};
             return Book.find(params)
         }
+    },
+
+    Mutation: {
+        addUser: async (parent, args) => {
+            const user = await User.create(args);
+
+            return user;
+
+        },
+        login: async () => {
+
+        }
     }
 }
 
