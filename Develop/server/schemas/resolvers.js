@@ -5,7 +5,7 @@ const { User, Book } = require("../models");
 const resolvers = {
 
     Query: {
-        savedBooks: async () => {
+        books: async () => {
             return Book.find().sort({ _id: -1  });
         }
     }
