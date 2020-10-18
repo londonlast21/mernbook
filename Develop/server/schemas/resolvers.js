@@ -30,7 +30,6 @@ const resolvers = {
         },
 
         
-        
         book: async (parent, { title }) => {
             return Book.findOne({ title });
         },
@@ -40,19 +39,24 @@ const resolvers = {
             return Book.find(params)
         }
     },
-
+//only these four functions necessary for assignment
     Mutation: {
         addUser: async (parent, args) => {
             const user = await User.create(args);
-            const token = signToken(user);
-
-            return {token, user};
+            
+            return user;
 
         },
         login: async (parent, {email, password }) => {
             const user = await User.findOne({ email });
 
             if (!user) {
+                throw new AuthenticationError('Incorrect credentials');
+            }
+
+            const correctPw = await user.isCorrectPassword(password);
+
+            if (!correctPw) {
                 throw new AuthenticationError('Incorrect credentials');
             }
 
