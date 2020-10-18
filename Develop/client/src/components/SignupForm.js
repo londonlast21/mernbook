@@ -36,23 +36,24 @@ const SignupForm = () => {
 
     // check if form has everything (as per react-bootstrap docs)
     const form = event.currentTarget;
-    if (form.checkValidity() === false) {
-      event.preventDefault();
-      event.stopPropagation();
-    }
+    // if (form.checkValidity() === false) {
+    //   event.preventDefault();
+    //   event.stopPropagation();
+    // }
 
     try {
       const { data } = await addUser({
         variables: { ...userFormData }
       });
 
+      console.log(data);
 
-      if (!data.ok) {
-        throw new Error('something went wrong!');
-      }
+      // if (!data.ok) {
+      //   throw new Error('something went wrong!');
+      // }
 
-      const { token, user } = await data.json();
-      console.log(user);
+     // const { token, user } = await data.json();
+      //console.log(user);
       Auth.login(data.addUser.token);
 
     } catch (e) {
