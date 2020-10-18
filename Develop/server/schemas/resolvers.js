@@ -49,17 +49,41 @@ const resolvers = {
             return { token, user };
 
         },
-        saveBook: async (parent, {bookId}, context) => {
+        saveBook: async (parent, args, context) => {
             if (context.user) {
-                const updatedUser= await User.findOneAndUpdate(
-                    { _id: context.user._id},
-                    { $addToSet: { savedBooks: body } },
+                const updatedUser = await Book.create({ ...args, username: context.user.username })
+
+
+                await User.findByIdAndUpdate(
+                    { _id: user._id },
+                    { $addToSet: { savedBooks: {bookId: params.bookId} } },
                     { new: true }
-                )}; 
-            if (!user) {
-                throw new AuthenticationError('You need to be logged in');
+                ) .populate('savedBooks');
+                
+                return updatedUser;
             }
+                throw new AuthenticationError('You need to be logged in');
+            
         },
+
+        removeBook: async (parent, args, context) => {
+            if (context.user) {
+                const updatedUser = await User.findByIdAndUpdate(
+                    { _id: user._id },
+                    { $pull: { savedBooks: { bookId: params.bookId } } },
+                    { new: true }
+                ).populate('savedBooks');
+
+                return updatedUser;
+            }
+
+            throw new AuthenticationError('Can not find user with this username');
+        }
+    
+    
+    // closure for mutations section
+    }
+        
 
         // removeBook: async(parent, {user, params} ) {
         //     if (context.user) {
@@ -73,8 +97,9 @@ const resolvers = {
         //         }
         //     }
         // }
-    }
-}
+
+
+};
 
 
 module.exports = resolvers;
