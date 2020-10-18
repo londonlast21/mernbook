@@ -13,7 +13,7 @@ const typeDefs = gql`
 
     },
 
-    input BookData {
+    input BookInput {
         authors: [String]
         description: String
         title: String
@@ -43,7 +43,7 @@ const typeDefs = gql`
         me: User
         users: [User]
         user(username: String!): User
-        books(title: String!): [Book]
+        books(username: String!): [Book]
         book(bookId: String!): Book
      },
  

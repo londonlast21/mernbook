@@ -1,5 +1,5 @@
 const { AuthenticationError } = require('apollo-server-express');
-const { User, Book, BookData } = require("../models");
+const { User, Book, BookInput } = require("../models");
 const { signToken } = require('../utils/auth');
 
 
@@ -72,9 +72,8 @@ const resolvers = {
         //             { new: true }
         //         );
         //         if (!updatedUser) {
-        //             return res.status(404).json({ message: " Couldn't find user with this id"});
+        //             return resolvers.status(404).json({ message: " Couldn't"})
         //         }
-        //         return res.json(updateUser);
         //     }
         // }
     }
