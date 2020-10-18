@@ -10,20 +10,19 @@ import { useMutation } from '@apollo/react-hooks';
 import { LOGIN_USER } from '../utils/mutations';
 
 
-const LoginForm = () => {
+const LoginForm = (args) => {
   const [userFormData, setUserFormData] = useState({ email: '', password: '' });
+  const [validated] = useState(false);
   // apollo 
   const [login, { error }] = useMutation(LOGIN_USER);
-
-
-  const [validated] = useState(false);
+ 
   const [showAlert, setShowAlert] = useState(false);
-
   
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
 
+    console.log(name);
     setUserFormData({ 
       ...userFormData,
        [name]: value 
@@ -32,30 +31,18 @@ const LoginForm = () => {
 
   const handleFormSubmit = async (event) => {
     event.preventDefault();
-
     
-
+    console.log("hit here");
     //check if form has everything (as per react-bootstrap docs)
     const form = event.currentTarget;
-    // if (form.checkValidity() === false) {
-    //   event.preventDefault();
-    //   event.stopPropagation();
-    // }
 
     try {
       const { data } = await login({
         variables: {...userFormData}
       });
 
-      console.log(data);
 
-      // if (!data.ok) {
-      //   throw new Error('something went wrong!');
-      // }
-
-      const { token, user } = await data.json();
-      console.log(user);
-      Auth.login(data.addUser.token);
+      Auth.login(data.login.token);
 
     } catch (e) {
       console.error(e);
@@ -67,14 +54,14 @@ const LoginForm = () => {
       email: '',
       password: '',
     });
-  };
-
+  }
   return (
     <>
       <Form noValidate validated={validated} onSubmit={handleFormSubmit}>
         <Alert dismissible onClose={() => setShowAlert(false)} show={showAlert} variant='danger'>
           Something went wrong with your login credentials!
         </Alert>
+
         <Form.Group>
           <Form.Label htmlFor='email'>Email</Form.Label>
           <Form.Control
