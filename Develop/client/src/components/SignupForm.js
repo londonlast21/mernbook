@@ -42,8 +42,8 @@ const SignupForm = () => {
         variables: { ...userFormData }
       });
 
-      Auth.login(data.addUser.token);
-      console.log(data);
+       Auth.login(data.addUser.token);
+      // console.log(data);
     
     // catch (e) {
     //   console.error(e);
@@ -65,11 +65,11 @@ const SignupForm = () => {
     //     throw new Error('something went wrong!');
     //   }
 
-    //   const { token, user } = await response.json();
-    //   console.log(user);
-    //   Auth.login(token);
-    } catch (err) {
-      console.error(err);
+      // const { token, user } = await response.json();
+      // console.log(user);
+      // Auth.login(token);
+    } catch (e) {
+      console.error(e);
       setShowAlert(true);
     }
 
