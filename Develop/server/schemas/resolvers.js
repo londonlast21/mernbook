@@ -19,21 +19,7 @@ const resolvers = {
 
             throw new AuthenticationError('Not logged in');
         },
-        // get all users
-        users: async () => {
-            return User.find()
-            .select('-_v -password')
-            .populate('savedBooks')
-
-        },
-        // get single user
-        user: async (parent, { username }) => {
-            return User.findOne({ username })
-            .select('-_v -password')
-            .populate('savedBooks')
-            
-        }
-
+       
         
         
     },
