@@ -33,6 +33,7 @@ const typeDefs = gql`
     },
 
     type Auth {
+        _id: Int
         token: ID!
         user: User
     },
