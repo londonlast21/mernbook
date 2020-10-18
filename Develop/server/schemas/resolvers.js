@@ -55,10 +55,7 @@ const resolvers = {
                     { _id: context.user._id},
                     { $addToSet: { savedBooks: body } },
                     { new: true }
-                ) 
-                .populate('savedBooks');
-                return res.json(updatedUser);
-            }; 
+                )}; 
             if (!user) {
                 throw new AuthenticationError('You need to be logged in');
             }
