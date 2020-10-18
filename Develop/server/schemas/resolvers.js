@@ -9,7 +9,7 @@ const resolvers = {
         // get me (user)
         me: async (parent, args, context) => {
             if (context.user) {
-                const userData = await User.findOne({})
+                const userData = await User.findOne({ _id: context.user._id })
                     .select('-_v -password')
                     .populate('savedBooks')
             }
@@ -27,17 +27,10 @@ const resolvers = {
             .select('-_v -password')
             .populate('savedBooks')
             
-        },
+        }
 
         
-        book: async (parent, { title }) => {
-            return Book.findOne({ title });
-        },
-
-        books: async (parent, { title }) => {
-            const params = title ? { title } : {};
-            return Book.find(params)
-        }
+        
     },
 //only these four functions necessary for assignment
     Mutation: {
