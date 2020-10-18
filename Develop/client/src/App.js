@@ -12,7 +12,7 @@ import Navbar from './components/Navbar';
 
 // setting up the ApolloClient to the backend endpoint
 const client = new ApolloClient({
-  uri: 'http://localhost3001:graphql'
+  uri: '/graphql'
 });
 //
 
