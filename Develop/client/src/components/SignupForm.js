@@ -1,44 +1,55 @@
 import React, { useState } from 'react';
 import { Form, Button, Alert } from 'react-bootstrap';
-
-import { createUser } from '../utils/API';
+//import { createUser } from '../utils/API';
 import Auth from '../utils/auth';
 
+// importing my apollo hooks
+import { useMutation } from '@apollo/react-hooks';
+import { ADD_USER } from '../utils/mutations';
+
+// my ADD_USER function from the hook
 const SignupForm = () => {
   // set initial form state
   const [userFormData, setUserFormData] = useState({ username: '', email: '', password: '' });
+  
+  // addUser from apollo hook
+  const [addUser, { error }] = useMutation(ADD_USER);
+  
   // set state for form validation
   const [validated] = useState(false);
   // set state for alert
   const [showAlert, setShowAlert] = useState(false);
 
+
   const handleInputChange = (event) => {
     const { name, value } = event.target;
-    setUserFormData({ ...userFormData, [name]: value });
+
+    // set form state
+    setUserFormData({
+       ...userFormData, 
+       [name]: value
+    });
   };
 
+  // add_user apollo edits here
   const handleFormSubmit = async (event) => {
     event.preventDefault();
 
     // check if form has everything (as per react-bootstrap docs)
-    const form = event.currentTarget;
-    if (form.checkValidity() === false) {
-      event.preventDefault();
-      event.stopPropagation();
-    }
+    //const form = event.currentTarget;
+   
 
     try {
-      const response = await createUser(userFormData);
+      const { data } = await addUser({
+        variables: { ...userFormData }
+      });
 
-      if (!response.ok) {
-        throw new Error('something went wrong!');
-      }
+      console.log(data);
 
-      const { token, user } = await response.json();
-      console.log(user);
-      Auth.login(token);
-    } catch (err) {
-      console.error(err);
+      Auth.login(data.addUser.token);
+
+    } catch (e) {
+      console.error(e);
       setShowAlert(true);
     }
 
@@ -47,8 +58,8 @@ const SignupForm = () => {
       email: '',
       password: '',
     });
-  };
-
+  
+  }
   return (
     <>
       {/* This is needed for the validation functionality above */}
@@ -103,8 +114,11 @@ const SignupForm = () => {
           Submit
         </Button>
       </Form>
+
+      {error && <div>Signup failed</div>}
     </>
   );
 };
+
 
 export default SignupForm;
