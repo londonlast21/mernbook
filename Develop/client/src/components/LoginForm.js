@@ -10,7 +10,7 @@ import Auth from '../utils/auth';
 
 
 
-const LoginForm = ({args}) => {
+const LoginForm = (props) => {
   const [userFormData, setUserFormData] = useState({ email: '', password: '' });
   const [validated] = useState(false);
   // apollo 
