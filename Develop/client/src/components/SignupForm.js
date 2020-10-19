@@ -36,7 +36,7 @@ const SignupForm = () => {
     event.preventDefault();
 
     // check if form has everything (as per react-bootstrap docs)
-    const form = event.currentTarget;
+    //const form = event.currentTarget;
    
 
     try {

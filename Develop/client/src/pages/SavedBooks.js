@@ -16,46 +16,43 @@ import { REMOVE_BOOK } from '../utils/mutations';
 
 
 
-const SavedBooks = (props) => {
-  const { username: userParam } = useParams();
-
-  const [userData, setUserData] = useState({ title:'', authors:'[]', description:'', bookId:'', image: '', link:'' });
+const SavedBooks = () => {
+  const [userData, setUserData] = useState({ });
 
   // use this to determine if `useEffect()` hook needs to run again
   const userDataLength = Object.keys(userData).length;
 
   const { loading, data } = useQuery(GET_ME, {
-    variables: {username: userParam}
+    variables: {username: useParams.username
+    }
   });
 
   const user = data?.me || data?.user || {};
   
 
   // useEffect(() => {
-  //   const getUserData = async () => {
-  //     try {
-  //       const token = Auth.loggedIn() ? Auth.getToken() : null;
+    const getUserData = async () => {
+      try {
+        const token = Auth.loggedIn() ? Auth.getToken() : null;
 
-  //       if (!token) {
-  //         return false;
-  //       }
+        // if (!token) {
+        //   return false;
+        // }
 
-  //       const response = await getMe(token);
+         const userDataLength = await getMe(token);
 
   //       if (!response.ok) {
   //         throw new Error('something went wrong!');
   //       }
 
-  //       const user = await response.json();
+        const user = await data.json();
   //       setUserData(user);
-  //     } catch (err) {
-  //       console.error(err);
-  //     }
-  //   };
+      } catch (err) {
+        console.error(err);
+      }
+    };
 
-  //   getUserData();
-  // }, [userDataLength]);
-
+     getUserData([userDataLength]);
 
 
 
@@ -63,9 +60,7 @@ const SavedBooks = (props) => {
   const handleDeleteBook = async (bookId) => {
     const token = Auth.loggedIn() ? Auth.getToken() : null;
 
-    if (!token) {
-      return false;
-    }
+   
 
     try {
       const response = await deleteBook(bookId, token);
@@ -121,6 +116,6 @@ const SavedBooks = (props) => {
       </Container>
     </>
   );
-};
 
+        };
 export default SavedBooks;
