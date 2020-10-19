@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Jumbotron, Container, Col, Form, Button, Card, CardColumns } from 'react-bootstrap';
 import Auth from '../utils/auth';
-import { saveBook, searchGoogleBooks } from '../utils/API';
+import { searchGoogleBooks } from '../utils/API';
 import { saveBookIds, getSavedBookIds } from '../utils/localStorage';
 
 /// apollo hook code
@@ -22,7 +22,7 @@ const SearchBooks = () => {
   useEffect(() => {
     return () => saveBookIds(savedBookIds);
   });
-  const [saveBook, error] = useMutation(SAVE_BOOK);
+  const [saveBook, { error } ] = useMutation(SAVE_BOOK);
 
   // create method to search for books and set state on form submit
   const handleFormSubmit = async (event) => {
@@ -63,16 +63,16 @@ const SearchBooks = () => {
 
     console.log(token);
 
-    try {
-
-      // if book successfully saves to user's account, save book id to state
-      setSavedBookIds([
-        ...savedBookIds, 
-        bookToSave.bookId
-      ]);
-    } catch (err) {
-      console.error(err);
-    }
+    
+       try {
+           const { data } = await saveBook({
+             variables: { bookData: { ...bookToSave } },
+           });
+           console.log(savedBookIds);
+           setSavedBookIds([...savedBookIds, bookToSave.bookId]);
+         } catch (err) {
+           console.error(err);
+         }
   };
 
   return (
